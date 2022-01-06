@@ -17,15 +17,7 @@ use App\Http\Controllers\CustomerController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/create', function () {
-    return view('create');
-});
-Route::post('/customer', function () {
-     return view('customer');
-     });
-Route::get('/show', function () {
-        return view('show');
-    });
+
 Route::resource('projects', ProjectController::class);
 
 Route::resource('customer', CustomerController::class);
