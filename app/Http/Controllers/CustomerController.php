@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\customer;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -14,7 +14,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return view('customer');
+        return view('customer/index', [
+            'customers' => Customer::all(),
+        ]);
     }
 
     /**
@@ -24,7 +26,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('customer');
+        return view('customer/create');
     }
 
     /**
@@ -35,24 +37,13 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        {
-            $request->validate([
-                'customer_name' => 'required',
-                'contact_person' => 'required',
+        $request->validate([
+            'customer_name' => 'required',
+            'contact_person' => 'required',
 
-            ]);
+        ]);
 
-            customer::create($request->all());
-
-
-
-        //On left field name in DB and on right field name in Form/view
-        $customer = new customer;
-            $customer->customer_name =  $request->get('customer_name');
-            $customer->contact_person = $request->get('contact_person');
-
-            $customer->save();
-        }
+        customer::create($request->all());
     }
 
     /**

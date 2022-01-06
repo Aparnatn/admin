@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -12,11 +13,11 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $projects = Project::latest()->paginate(5);
 
-        return view('welcome', compact('projects'))
+        return view('projects/index', compact('projects'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -27,7 +28,10 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('create');
+
+        return view('projects/create', [
+            'customers' => Customer::all()
+        ]);
     }
 
     /**
@@ -43,21 +47,12 @@ class ProjectController extends Controller
             'project_location' => 'required',
             'date' => 'required',
             'complete_date' => 'required',
-            'customer_details' => 'required',
+            'customer_id' => 'required',
         ]);
 
         Project::create($request->all());
 
-
-
-    //On left field name in DB and on right field name in Form/view
-    $project = new Project;
-        $project->project_name =  $request->get('project_name');
-        $project->project_location = $request->get('project_location');
-        $project->customer_id = $request->get('customer_id');
-        $project->date = $request->get('date');
-        $project->complete_date = $request->get('complete_date');
-        $project->save();
+        redirect('projects');
     }
 
 
@@ -70,13 +65,7 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
         $projects = Project::all();
-        return view('show', ['project'=>$projects]);
-
-        foreach ($projects as $project) {
-
-
-
-       }
+        return view('show', ['project' => $projects]);
     }
 
     /**

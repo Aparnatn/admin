@@ -15,7 +15,7 @@
         </div>
     </div>
 
-    {{-- @if ($errors->any())
+    @if ($errors && $errors->any())
         <div class="alert alert-danger">
             <strong>Error!</strong>
             <ul>
@@ -24,7 +24,7 @@
                 @endforeach
             </ul>
         </div>
-    @endif --}}
+    @endif
     <form action="{{ route('projects.store') }}" method="POST" >
         @csrf
 
@@ -56,7 +56,11 @@
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Customer Details:</strong>
-                    <input type="text" name="customer_id" class="form-control" >
+                    <select name="customer_id" class="form-control">
+                    @foreach ($customers as $customer)
+                        <option value="{{ $customer->id }}">{{ $customer->customer_name }}</option>
+                    @endforeach
+                    </select>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
